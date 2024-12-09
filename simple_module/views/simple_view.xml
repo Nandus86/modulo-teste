@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_simple_model_tree" model="ir.ui.view">
+        <field name="name">simple.model.tree</field>
+        <field name="model">simple.model</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_simple_model_form" model="ir.ui.view">
+        <field name="name">simple.model.form</field>
+        <field name="model">simple.model</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <footer>
+                        <button name="action_button" string="Click Me" type="object" class="btn-primary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_simple_model" model="ir.actions.act_window">
+        <field name="name">Simple Records</field>
+        <field name="res_model">simple.model</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_simple_root" name="Simple Module" sequence="10"/>
+    <menuitem id="menu_simple_model" name="Simple Records" parent="menu_simple_root" action="action_simple_model" sequence="1"/>
+</odoo>
