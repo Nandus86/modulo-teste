@@ -20,23 +20,46 @@
 #
 #############################################################################
 
-from odoo import models, fields, api
+import json
+import requests
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 class SimpleModel(models.Model):
     _name = 'simple.model'
     _description = 'Simple Model'
 
     name = fields.Char(string='Text Field', required=True)
+    webhook_url = fields.Char(string='Webhook URL', 
+                            default='https://brain.nandus.com.br/webhook-test/verifica-html',  # Replace with your webhook URL
+                            config_parameter='simple_module.webhook_url')
 
-    def action_button(self):
-        """Action performed when button is clicked"""
+    def send_webhook(self):
+        """Send data to webhook"""
         self.ensure_one()
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'message': 'Button clicked!',
-                'type': 'success',
-                'sticky': False,
-            }
+        webhook_url = self.env['ir.config_parameter'].sudo().get_param('simple_module.webhook_url')
+        
+        if not webhook_url:
+            raise UserError(_('Please configure the webhook URL in System Parameters'))
+
+        payload = {
+            'dado': self.name
         }
+
+        try:
+            response = requests.post(webhook_url, 
+                                  json=payload,
+                                  headers={'Content-Type': 'application/json'})
+            response.raise_for_status()
+            
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': _('Data sent successfully!'),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        except Exception as e:
+            raise UserError(_('Failed to send data: %s') % str(e))

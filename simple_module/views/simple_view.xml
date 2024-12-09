@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <button name="send_webhook" string="Send to Webhook" type="object" class="btn btn-primary"/>
             </tree>
         </field>
     </record>
@@ -21,9 +22,6 @@
                     <group>
                         <field name="name"/>
                     </group>
-                    <footer>
-                        <button name="action_button" string="Click Me" type="object" class="btn-primary"/>
-                    </footer>
                 </sheet>
             </form>
         </field>
@@ -31,12 +29,12 @@
 
     <!-- Action -->
     <record id="action_simple_model" model="ir.actions.act_window">
-        <field name="name">Simple Records</field>
+        <field name="name">Text Entries</field>
         <field name="res_model">simple.model</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <!-- Menu -->
     <menuitem id="menu_simple_root" name="Simple Module" sequence="10"/>
-    <menuitem id="menu_simple_model" name="Simple Records" parent="menu_simple_root" action="action_simple_model" sequence="1"/>
+    <menuitem id="menu_simple_model" name="Text Entries" parent="menu_simple_root" action="action_simple_model" sequence="1"/>
 </odoo>
